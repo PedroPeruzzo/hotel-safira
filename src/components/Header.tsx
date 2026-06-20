@@ -35,19 +35,15 @@ export default function Header() {
             </Link>
 
             <nav className="header-nav">
-              {navLinks.map(link =>
-                link.to.startsWith('/#') ? (
-                  <a key={link.to} href={link.to}>{link.label}</a>
-                ) : (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className={location.pathname === link.to ? 'active' : ''}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+              {navLinks.map(link => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={location.pathname === link.to ? 'active' : ''}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
 
             {/* White outline button — transparent bg, white border */}
@@ -75,13 +71,9 @@ export default function Header() {
       </header>
 
       <nav className={`mobile-menu${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
-        {navLinks.map(link =>
-          link.to.startsWith('/#') ? (
-            <a key={link.to} href={link.to} onClick={closeMenu}>{link.label}</a>
-          ) : (
-            <Link key={link.to} to={link.to} onClick={closeMenu}>{link.label}</Link>
-          )
-        )}
+        {navLinks.map(link => (
+          <Link key={link.to} to={link.to} onClick={closeMenu}>{link.label}</Link>
+        ))}
         <a
           href="https://wa.me/5573988613327?text=Olá!%20Gostaria%20de%20fazer%20uma%20reserva."
           target="_blank"
