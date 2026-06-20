@@ -14,6 +14,11 @@ export default function Header() {
 
   useEffect(() => { setMenuOpen(false) }, [location.pathname])
 
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen)
+    return () => document.body.classList.remove('menu-open')
+  }, [menuOpen])
+
   const closeMenu = () => setMenuOpen(false)
 
   return (
