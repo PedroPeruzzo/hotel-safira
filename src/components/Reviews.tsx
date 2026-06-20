@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Star } from 'lucide-react'
 
 const reviews = [
   {
@@ -40,15 +40,20 @@ const reviews = [
   },
 ]
 
-// Clones at both ends for seamless infinite loop in both directions
 const cloned = [...reviews, ...reviews, ...reviews]
-const OFFSET = reviews.length // start in the middle copy
+const OFFSET = reviews.length
 
 export default function Reviews() {
-  const [idx, setIdx] = useState(OFFSET)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [idx, setIdx]           = useState(OFFSET)
+  const [dragDelta, setDragDelta] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
 
+  const trackRef   = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const timerRef   = useRef<ReturnType<typeof setInterval> | null>(null)
+  const dragStartX = useRef<number | null>(null)
+
+  /* ── helpers ── */
   const setInstant = (newIdx: number) => {
     const track = trackRef.current
     if (!track) return
@@ -61,36 +66,67 @@ export default function Reviews() {
 
   const go = (newIdx: number) => {
     setIdx(newIdx)
-    // Reset auto-advance timer on manual navigation
+    restartTimer()
+  }
+
+  const restartTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current)
     timerRef.current = setInterval(() => setIdx(i => i + 1), 20000)
   }
 
-  // Auto-advance every 20 seconds, always forward (left)
+  /* ── auto-advance ── */
   useEffect(() => {
-    timerRef.current = setInterval(() => setIdx(i => i + 1), 20000)
+    restartTimer()
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [])
 
-  // Seamless wrap: after transition ends, snap without animation
+  /* ── seamless wrap ── */
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
     const onEnd = () => {
       if (idx >= OFFSET + reviews.length) setInstant(idx - reviews.length)
-      else if (idx < OFFSET) setInstant(idx + reviews.length)
+      else if (idx < OFFSET)              setInstant(idx + reviews.length)
     }
     track.addEventListener('transitionend', onEnd)
     return () => track.removeEventListener('transitionend', onEnd)
   }, [idx])
 
-  // translateX: each card = 100% / cloned.length of the track
-  // track width = cloned.length / 3 * 100% of wrapper
-  // translateX(-n / cloned.length * 100%) moves n cards left
+  /* ── drag ── */
+  const onMouseDown = (e: React.MouseEvent) => {
+    dragStartX.current = e.clientX
+    setIsDragging(true)
+    setDragDelta(0)
+    if (timerRef.current) clearInterval(timerRef.current)
+  }
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (dragStartX.current === null) return
+    setDragDelta(e.clientX - dragStartX.current)
+  }
+
+  const onMouseUp = () => {
+    if (dragStartX.current === null) return
+    const threshold = 60
+    if (dragDelta < -threshold)      go(idx + 1)
+    else if (dragDelta > threshold)  go(idx - 1)
+    else                             restartTimer()
+    dragStartX.current = null
+    setIsDragging(false)
+    setDragDelta(0)
+  }
+
+  /* ── transform ── */
   const tx = -(idx / cloned.length) * 100
+  const trackStyle: React.CSSProperties = {
+    transform: isDragging
+      ? `translateX(calc(${tx}% + ${dragDelta}px))`
+      : `translateX(${tx}%)`,
+    ...(isDragging ? { transition: 'none' } : {}),
+  }
 
   return (
-    <section className="reviews section section-alt">
+    <section className="reviews section">
       <div className="container">
         <div className="reviews-intro">
           <div className="ta-badge">
@@ -109,42 +145,35 @@ export default function Reviews() {
           <div className="section-divider" />
         </div>
 
-        <div className="reviews-carousel">
-          <button className="carousel-btn" onClick={() => go(idx - 1)} aria-label="Anterior">
-            <ChevronLeft size={18} />
-          </button>
-
-          <div className="reviews-track-wrapper">
-            <div
-              ref={trackRef}
-              className="reviews-track"
-              style={{ transform: `translateX(${tx}%)` }}
-            >
-              {cloned.map((review, i) => (
-                <div key={i} className="review-card">
-                  <div className="review-card-inner">
-                    <div className="review-stars">
-                      {Array.from({ length: 5 }).map((_, j) => (
-                        <Star key={j} size={15} fill="currentColor" />
-                      ))}
-                    </div>
-                    <p className="review-text">"{review.text}"</p>
-                    <div className="review-author">
-                      <div className="review-avatar">{review.initials}</div>
-                      <div>
-                        <div className="review-name">{review.name}</div>
-                        <div className="review-date">{review.date} · TripAdvisor</div>
-                      </div>
+        <div
+          ref={wrapperRef}
+          className={`reviews-track-wrapper${isDragging ? ' dragging' : ''}`}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+        >
+          <div ref={trackRef} className="reviews-track" style={trackStyle}>
+            {cloned.map((review, i) => (
+              <div key={i} className="review-card">
+                <div className="review-card-inner">
+                  <div className="review-stars">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} size={15} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="review-text">"{review.text}"</p>
+                  <div className="review-author">
+                    <div className="review-avatar">{review.initials}</div>
+                    <div>
+                      <div className="review-name">{review.name}</div>
+                      <div className="review-date">{review.date} · TripAdvisor</div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-
-          <button className="carousel-btn" onClick={() => go(idx + 1)} aria-label="Próximo">
-            <ChevronRight size={18} />
-          </button>
         </div>
       </div>
     </section>

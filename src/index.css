@@ -899,7 +899,7 @@ ul  { list-style: none; }
 /* =========================================
    REVIEWS
    ========================================= */
-.reviews { padding: 5rem 0; background: var(--color-off-white); }
+.reviews { padding: 5rem 0; background: var(--color-white); }
 
 .reviews-intro {
   display: flex;
@@ -922,22 +922,19 @@ ul  { list-style: none; }
   margin-bottom: 1.5rem;
 }
 
-/* Carousel wrapper */
-.reviews-carousel {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .reviews-track-wrapper {
   overflow: hidden;
   flex: 1;
-  background: var(--color-off-white);
+  background: var(--color-white);
+  cursor: grab;
+}
+.reviews-track-wrapper.dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .reviews-track {
   display: flex;
-  /* width: 18 items / 3 visible = 6× the wrapper */
   width: calc(18 / 3 * 100%);
   transition: transform 0.55s ease;
 }
@@ -949,34 +946,15 @@ ul  { list-style: none; }
   box-sizing: border-box;
 }
 
-/* Carousel nav buttons — discrete ghost style */
-.carousel-btn {
-  flex-shrink: 0;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(27,58,107,0.25);
-  background: transparent;
-  color: rgba(27,58,107,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: border-color var(--transition), color var(--transition);
-}
-.carousel-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
 
 /* visual card */
 .review-card-inner {
   background: var(--color-white);
   border-radius: var(--radius);
   padding: 1.75rem;
-  box-shadow: var(--shadow);
   position: relative;
   height: 100%;
+  overflow: hidden;
 }
 .review-card-inner::before {
   content: '\201C';
@@ -985,7 +963,7 @@ ul  { list-style: none; }
   color: var(--color-accent);
   opacity: 0.15;
   position: absolute;
-  top: -1rem; left: 1rem;
+  top: -0.5rem; left: 0.75rem;
   line-height: 1;
   pointer-events: none;
 }
