@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Instagram, Facebook, Send, CheckCircle } from 'lucide-react'
+import ExclusiveOffer from '../components/ExclusiveOffer'
 
 interface FormState {
   nome: string
@@ -33,7 +34,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Page Hero */}
-      <div className="page-hero">
+      <div className="page-hero page-hero--contact">
         <div className="container">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Página inicial</Link>
@@ -205,24 +206,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Exclusive Offer Banner */}
-      <section className="offer-banner">
-        <div className="container">
-          <div className="offer-banner-inner">
-            <div>
-              <span className="offer-banner-tag">OFERTA EXCLUSIVA</span>
-              <h2 className="offer-banner-title">Reserve agora e aproveite 10% de desconto especial</h2>
-            </div>
-            <a
-              href="https://wa.me/5573988613327?text=Olá!%20Gostaria%20de%20reservar%20e%20utilizar%20o%20desconto%20de%2010%%20."
-              target="_blank" rel="noopener noreferrer"
-              className="btn btn-primary"
-            >
-              RESERVE JÁ!
-            </a>
-          </div>
-        </div>
-      </section>
+      <ExclusiveOffer />
     </>
   )
 }
