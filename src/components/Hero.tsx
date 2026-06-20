@@ -1,3 +1,5 @@
+import ScrollDownBtn from './ScrollDownBtn'
+
 export default function Hero() {
   const scrollDown = () => {
     document.getElementById('sobre')?.scrollIntoView({ behavior: 'smooth' })
@@ -5,10 +7,6 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero">
-      {/*
-        Vídeo em loop — coloque o arquivo em /public/hero-video.mp4
-        O atributo `poster` é exibido enquanto o vídeo carrega ou como fallback.
-      */}
       <video
         className="hero-video"
         autoPlay
@@ -27,30 +25,7 @@ export default function Hero() {
         <p className="hero-subtitle-caps">O SEU HOTEL EM PORTO SEGURO, BAHIA.</p>
       </div>
 
-      {/* Scroll indicator — discreet arrow + label */}
-      <button
-        className="hero-scroll-btn"
-        onClick={scrollDown}
-        aria-label="Ir para próxima seção"
-      >
-        <span className="hero-scroll-label">Explorar</span>
-        <svg
-          className="hero-scroll-arrow"
-          width="18"
-          height="11"
-          viewBox="0 0 18 11"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M1 1L9 9.5L17 1"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+      <ScrollDownBtn onClick={scrollDown} />
     </section>
   )
 }

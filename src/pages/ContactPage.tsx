@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Instagram, Facebook, Send, CheckCircle } from 'lucide-react'
 import ExclusiveOffer from '../components/ExclusiveOffer'
+import ScrollDownBtn from '../components/ScrollDownBtn'
 
 interface FormState {
   nome: string
@@ -46,6 +47,7 @@ export default function ContactPage() {
             Valorizamos cada experiência dos nossos hóspedes e estamos sempre prontos para ajudar.
           </p>
         </div>
+        <ScrollDownBtn />
       </div>
 
       {/* Main content */}

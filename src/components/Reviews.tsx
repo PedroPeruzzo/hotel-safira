@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Star } from 'lucide-react'
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const reviews = [
   {
@@ -145,35 +145,45 @@ export default function Reviews() {
           <div className="section-divider" />
         </div>
 
-        <div
-          ref={wrapperRef}
-          className={`reviews-track-wrapper${isDragging ? ' dragging' : ''}`}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-        >
-          <div ref={trackRef} className="reviews-track" style={trackStyle}>
-            {cloned.map((review, i) => (
-              <div key={i} className="review-card">
-                <div className="review-card-inner">
-                  <div className="review-stars">
-                    {Array.from({ length: 5 }).map((_, j) => (
-                      <Star key={j} size={15} fill="currentColor" />
-                    ))}
-                  </div>
-                  <p className="review-text">"{review.text}"</p>
-                  <div className="review-author">
-                    <div className="review-avatar">{review.initials}</div>
-                    <div>
-                      <div className="review-name">{review.name}</div>
-                      <div className="review-date">{review.date} · TripAdvisor</div>
+        <div className="reviews-carousel">
+          <button className="reviews-arrow" onClick={() => go(idx - 1)} aria-label="Anterior">
+            <ChevronLeft size={20} />
+          </button>
+
+          <div
+            ref={wrapperRef}
+            className={`reviews-track-wrapper${isDragging ? ' dragging' : ''}`}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseUp}
+          >
+            <div ref={trackRef} className="reviews-track" style={trackStyle}>
+              {cloned.map((review, i) => (
+                <div key={i} className="review-card">
+                  <div className="review-card-inner">
+                    <div className="review-stars">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <Star key={j} size={15} fill="currentColor" />
+                      ))}
+                    </div>
+                    <p className="review-text">"{review.text}"</p>
+                    <div className="review-author">
+                      <div className="review-avatar">{review.initials}</div>
+                      <div>
+                        <div className="review-name">{review.name}</div>
+                        <div className="review-date">{review.date} · TripAdvisor</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          <button className="reviews-arrow" onClick={() => go(idx + 1)} aria-label="Próximo">
+            <ChevronRight size={20} />
+          </button>
         </div>
       </div>
     </section>

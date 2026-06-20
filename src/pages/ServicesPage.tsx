@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import ExclusiveOffer from '../components/ExclusiveOffer'
 import Reviews from '../components/Reviews'
+import ScrollDownBtn from '../components/ScrollDownBtn'
 
 interface Service {
   title: string
@@ -88,6 +89,7 @@ export default function ServicesPage() {
             Conheça tudo o que o Safira Praia Hotel tem a oferecer para a sua estadia perfeita.
           </p>
         </div>
+        <ScrollDownBtn />
       </div>
 
       {/* Full-bleed alternating service rows */}

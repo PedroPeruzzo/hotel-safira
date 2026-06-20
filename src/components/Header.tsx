@@ -48,7 +48,7 @@ export default function Header() {
 
             {/* White outline button — transparent bg, white border */}
             <a
-              href="https://wa.me/5573988613327?text=Olá!%20Gostaria%20de%20fazer%20uma%20reserva."
+              href="https://book.omnibees.com/hotelresults?q=5282"
               target="_blank"
               rel="noopener noreferrer"
               className="header-cta btn-header-reserve"
