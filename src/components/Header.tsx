@@ -29,7 +29,7 @@ export default function Header() {
           <div className="header-inner">
             <Link to="/" className="header-logo">
               <img
-                src="https://safirapraiahotel.com/wp-content/uploads/2024/05/SAFIRA-LOGO-BRANCA-HORIZONTAL.png"
+                src="/images/SAFIRA-LOGO-BRANCA-HORIZONTAL.png"
                 alt="Safira Praia Hotel"
               />
             </Link>
@@ -48,7 +48,7 @@ export default function Header() {
 
             {/* White outline button — transparent bg, white border */}
             <a
-              href="https://book.omnibees.com/hotelresults?q=5282"
+              href="https://book.omnibees.com/hotelresults?c=2887&q=5282"
               target="_blank"
               rel="noopener noreferrer"
               className="header-cta btn-header-reserve"
