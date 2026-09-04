@@ -75,7 +75,7 @@ export default function Header() {
           <Link key={link.to} to={link.to} onClick={closeMenu}>{link.label}</Link>
         ))}
         <a
-          href="https://wa.me/5573988613327?text=Olá!%20Gostaria%20de%20fazer%20uma%20reserva."
+          href="https://book.omnibees.com/hotelresults?c=2887&q=5282"
           target="_blank"
           rel="noopener noreferrer"
           className="btn-header-reserve"
