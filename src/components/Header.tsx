@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { trackEvent } from '../lib/analytics'
 
 const navLinks = [
   { label: 'Página inicial', to: '/' },
@@ -52,6 +53,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               className="header-cta btn-header-reserve"
+              onClick={() => trackEvent('reserve_ja_click', { location: 'header_desktop' })}
             >
               RESERVE JÁ!
             </a>
@@ -79,7 +81,7 @@ export default function Header() {
           target="_blank"
           rel="noopener noreferrer"
           className="btn-header-reserve"
-          onClick={closeMenu}
+          onClick={() => { trackEvent('reserve_ja_click', { location: 'header_mobile' }); closeMenu() }}
         >
           RESERVE JÁ!
         </a>

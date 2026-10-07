@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import { Users } from 'lucide-react'
+import { trackEvent } from '../lib/analytics'
 
 const rooms = [
   {
@@ -80,6 +81,7 @@ export default function Accommodations() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-reserve-now"
+                  onClick={() => trackEvent('reserve_agora_click', { room_name: room.title })}
                 >
                   RESERVE AGORA
                 </a>
